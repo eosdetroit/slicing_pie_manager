@@ -1,6 +1,8 @@
 # Copyright 2014 SolidBuilds.com. All rights reserved
 #
 # Authors: Ling Thio <ling.thio@gmail.com>, Matt Hogan <matt@twintechlabs.io>
+import enum
+from datetime import datetime
 
 from flask_user import UserMixin
 from flask_user.forms import RegisterForm
@@ -19,7 +21,6 @@ class User(db.Model, UserMixin):
     confirmed_at = db.Column(db.DateTime())
     password = db.Column(db.String(255), nullable=False, server_default='')
     # reset_password_token = db.Column(db.String(100), nullable=False, server_default='')
-    active = db.Column(db.Boolean(), nullable=False, server_default='0')
 
     # User information
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='0')
@@ -27,8 +28,10 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
 
     # Relationships
+    contributions = db.relationship('Contribution', backref='users', lazy=True)
     roles = db.relationship('Role', secondary='users_roles',
                             backref=db.backref('users', lazy='dynamic'))
+
     def has_role(self, role):
         for item in self.roles:
             if item.name == 'admin':
@@ -76,3 +79,32 @@ class UserProfileForm(FlaskForm):
     last_name = StringField('Last name', validators=[
         validators.DataRequired('Last name is required')])
     submit = SubmitField('Save')
+
+class ContributionStatus(enum.Enum):
+    PROPOSED = "Reported"
+    APPROVED = "Approved"
+    DENIED = "Denied"
+    APPEALED = "Appealed"
+
+
+class Contribution(db.Model):
+    __tablename__ = 'contributions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    task = db.Column(db.String(80), nullable=False)
+    work_rate = db.relationship('WorkRate', back_populates='contributions')
+    work_rate_id = db.Column(db.Integer, db.ForeignKey('work_rates.id'))
+    hours_spent = db.Column(db.Float, default=0.0)
+    cash_spent = db.Column(db.Float, default=0.0)
+    status = db.Column(db.Enum(ContributionStatus))
+    contribution_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
+class WorkRate(db.Model):
+    __tablename__ = 'work_rates'
+
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(80), nullable=False)
+    slices_per_hour = db.Column(db.Float, nullable=False)
+    contributions = db.relationship('Contribution', back_populates='work_rate')
