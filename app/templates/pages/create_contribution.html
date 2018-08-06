@@ -1,0 +1,62 @@
+{% extends "common/dark_base.html" %}  {# common/page_base.html extends layout.html #}
+
+{% block content %}
+
+{% from "common/form_macros.html" import render_field, render_submit_field %}
+  <!-- Breadcrumb-->
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">Home</li>
+    <li class="breadcrumb-item">Dashboard</li>
+    <li class="breadcrumb-item active">Add Contribution</li>
+  </ol>
+  <div class="container-fluid">
+    <div class="animated fadeIn">
+      <div class="card ">
+        <form action="" method="POST" class="form" role="form">
+          <div class="card-header">
+            <strong>Add Contribution</strong>
+          </div>
+          {% if form.errors %}
+            <ul class="errors">
+              {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                {% for error in field_errors %}
+                <li>{{ form[field_name].label }}: {{ error }}</li>
+                {% endfor %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+          <div class="card-body">
+                {{ form.hidden_tag() }}
+                <div class="form-group ">
+                  <label for="work_rate">Work Category</label>
+                  <select name="work_rate">
+                  {% for category in form.work_rate %}
+                    {{ category }}
+                  {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group ">
+                  <label for="task">Task</label>
+                  <input type="text" class="form-control" id="task" name="task" placeholder="Enter Task Reference" value="">
+                </div>
+                <div class="form-group ">
+                  <label for="hours_spent">Hours Spent</label>
+                  <input type="number" step="any" class="form-control" id="hours_spent" name="hours_spent" placeholder="Enter Hours Spent" value="">
+                </div>
+                <div class="form-group ">
+                  <label for="cash_spent">Cash Spent</label>
+                  <input type="number" step="any" class="form-control" id="cash_spent" name="cash_spent" placeholder="Enter Cash Spent" value="">
+                </div>
+                <div class="form-group ">
+                  <label for="contribution_date">Contribution Date</label>
+                  <input type="datetime" class="form-control" id="contribution_date" name="contribution_date" placeholder="Enter Contribution Date" value="">
+                </div>
+          </div>
+          <div class="card-footer ">
+            <button type="submit " class="btn btn-sm btn-primary "><i class="fa fa-dot-circle-o "></i> Submit</button>
+            <button type="reset " class="btn btn-sm btn-danger "><i class="fa fa-ban "></i> Reset</button>
+          </div>
+        </form>
+      </div>
+</div>
+{% endblock %}

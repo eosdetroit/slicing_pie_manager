@@ -7,7 +7,7 @@ from datetime import datetime
 from flask_user import UserMixin
 from flask_user.forms import RegisterForm
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, validators
+from wtforms import StringField, SubmitField, DecimalField, SelectField, DateTimeField, validators
 from app import db
 
 
@@ -80,6 +80,7 @@ class UserProfileForm(FlaskForm):
         validators.DataRequired('Last name is required')])
     submit = SubmitField('Save')
 
+
 class ContributionStatus(enum.Enum):
     PROPOSED = "Reported"
     APPROVED = "Approved"
@@ -97,14 +98,36 @@ class Contribution(db.Model):
     work_rate_id = db.Column(db.Integer, db.ForeignKey('work_rates.id'))
     hours_spent = db.Column(db.Float, default=0.0)
     cash_spent = db.Column(db.Float, default=0.0)
-    status = db.Column(db.Enum(ContributionStatus))
+    status = db.Column(db.Enum(ContributionStatus), default=ContributionStatus.PROPOSED)
     contribution_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
+class ContributionForm(FlaskForm):
+    work_rate = SelectField('Work Category', validators=[
+        validators.DataRequired('A work rate category is required.')], coerce=int)
+    task = StringField('Trello Task', validators=[
+        validators.DataRequired('A reference to the task is required.'),
+        validators.Length(max=80)])
+    hours_spent = DecimalField('Hours spent', validators=None, default=0)
+    cash_spent = DecimalField('Cash spent', validators=None, default=0)
+    contribution_date = DateTimeField()
+    submit = SubmitField('Create Contribution')
 
 
 class WorkRate(db.Model):
     __tablename__ = 'work_rates'
 
     id = db.Column(db.Integer, primary_key=True)
-    category = db.Column(db.String(80), nullable=False)
+    category = db.Column(db.String(80), nullable=False, unique=True)
     slices_per_hour = db.Column(db.Float, nullable=False)
     contributions = db.relationship('Contribution', back_populates='work_rate')
+
+
+class WorkRateForm(FlaskForm):
+    category = StringField('Category Label', validators=[
+        validators.DataRequired('A category label is required.'),
+        validators.Length(max=80)])
+    slices_per_hour = DecimalField('Slices per hour', validators=[
+        validators.DataRequired('Slices per hour is required.')])
+    submit = SubmitField('Create Work Rate')
+
