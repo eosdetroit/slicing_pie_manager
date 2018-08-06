@@ -46,10 +46,9 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.member_page') }}">
                       <i class="nav-icon icon-speedometer"></i> Dashboard
-                      <span class="badge badge-primary">NEW</span>
                     </a>
                   </li>
-                  <li class="nav-item nav-dropdown">
+                  <li class="nav-item nav-dropdown open">
                     <a class="nav-link nav-dropdown-toggle" href="#">
                       <i class="nav-icon icon-bell"></i> My Account</a>
                     <ul class="nav-dropdown-items">
@@ -61,12 +60,20 @@
                         <a class="nav-link" href="{{ url_for('user.change_password') }}">
                           <i class="nav-icon icon-drop"></i> Password</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.create_contribution_page') }}">
+                          <i class="nav-icon icon-drop"></i> Manage Contributions</a>
+                      </li>
                     </ul>
                   </li>
                   <li class="nav-title">Administration</li>
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.user_admin_page') }}">
                       <i class="nav-icon icon-drop"></i> Manage Users</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.create_work_rate_page') }}">
+                      <i class="nav-icon icon-drop"></i> Manage Work Rates</a>
                   </li>
                 </ul>
               </nav>
@@ -94,11 +101,8 @@
         {% endblock %}
         </div>
         <footer class="app-footer">
-          <div>FlaskDash &copy; 2018 Twin Tech Labs</div>
+          <div>Slicing Pie Manager &copy; 2018 EOS Detroit Inc.</div>
           <div class="ml-auto">
-            <span>Powered by</span>
-            <a href="https://coreui.io">CoreUI</a>
-            <span>(&copy; 2018 creativeLabs.)</span>
           </div>
         </footer>
       </div>
