@@ -5,7 +5,7 @@ from flask import request, url_for, flash, send_from_directory, jsonify, render_
 from flask_user import current_user, login_required, roles_accepted
 
 from app import db
-from app.models.user_models import UserProfileForm, User, UsersRoles, Contribution, ContributionForm, WorkRate, WorkRateForm
+from app.models.user_models import UserProfileForm, User, Role, UsersRoles, Contribution, ContributionForm, WorkRate, WorkRateForm
 import uuid, json, os
 import datetime
 
@@ -27,12 +27,14 @@ def member_page():
 def create_contribution_page():
     form = ContributionForm(request.form)
     form.work_rate.choices = [(rate.id, rate.category) for rate in WorkRate.query.all()]
+    form.role.choices = [(group.id, group.name) for group in Role.query.filter(Role.name != "admin").all()]
     # TODO: save contribution object.
     if request.method == 'POST' and form.validate():
         contribution = Contribution(
             user_id=current_user.id, 
             task=form.task.data,
-            work_rate_id=form.work_rate.data, 
+            work_rate_id=form.work_rate.data,
+            role_id=form.role.data,
             hours_spent=form.hours_spent.data, 
             cash_spent=form.cash_spent.data, 
             contribution_date=form.contribution_date.data)
@@ -90,6 +92,7 @@ def delete_user_page():
     except Exception as e:
         flash('Opps!  Something unexpected happened.  On the brightside, we logged the error and will absolutely look at it and work to correct it, ASAP.', 'error')
         return redirect(request.referrer)
+
 
 @main_blueprint.route('/create_work_rate', methods=['GET', 'POST'])
 @roles_accepted('admin')

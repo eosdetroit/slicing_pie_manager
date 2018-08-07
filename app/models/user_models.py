@@ -32,6 +32,7 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary='users_roles',
                             backref=db.backref('users', lazy='dynamic'))
 
+
     def has_role(self, role):
         for item in self.roles:
             if item.name == 'admin':
@@ -94,11 +95,13 @@ class Contribution(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.relationship('User', back_populates='contributions')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    task = db.Column(db.String(80), nullable=False)
+    task = db.Column(db.Unicode(255), nullable=False)
     work_rate = db.relationship('WorkRate', back_populates='contributions')
     work_rate_id = db.Column(db.Integer, db.ForeignKey('work_rates.id'))
     hours_spent = db.Column(db.Float, default=0.0)
     cash_spent = db.Column(db.Float, default=0.0)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
+    role = db.relationship('Role')
     status = db.Column(db.String(36), default=ContributionStatus.PROPOSED.value)
     contribution_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
@@ -106,9 +109,11 @@ class Contribution(db.Model):
 class ContributionForm(FlaskForm):
     work_rate = SelectField('Work Category', validators=[
         validators.DataRequired('A work rate category is required.')], coerce=int)
+    role = SelectField('Working Group', validators=[
+        validators.DataRequired('A working group is required.')], coerce=int)
     task = StringField('Trello Task', validators=[
         validators.DataRequired('A reference to the task is required.'),
-        validators.Length(max=80)])
+        validators.Length(max=255)])
     hours_spent = DecimalField('Hours spent', validators=None, default=0)
     cash_spent = DecimalField('Cash spent', validators=None, default=0)
     contribution_date = DateTimeField(format='%Y-%m-%d %H:%M')

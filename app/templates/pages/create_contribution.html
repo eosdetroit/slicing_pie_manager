@@ -36,6 +36,14 @@
                   </select>
                 </div>
                 <div class="form-group ">
+                  <label for="role">Group</label>
+                  <select name="role">
+                  {% for group in form.role %}
+                    {{ group }}
+                  {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group ">
                   <label for="task">Task</label>
                   <input type="text" class="form-control" id="task" name="task" placeholder="Enter Task Reference" value="">
                 </div>

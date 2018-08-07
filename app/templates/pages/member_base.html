@@ -9,6 +9,7 @@
       <th scope="col">ID</th>
       <th scope="col">Task</th>
       <th scope="col">Category</th>
+      <th scope="col">Working Group</th>
       <th scope="col">Hours Spent</th>
       <th scope="col">Cash Spent</th>
       <th scope="col">Contributor</th>
@@ -22,6 +23,7 @@
       <th scope="row">{{ contribution.id }}</th>
       <th scope="row">{{ contribution.task }}</th>
       <td scope="row">{{ contribution.work_rate.category }}</td>
+      <td scope="row">{{ contribution.role.label }}</td>
       <td scope="row">{{ contribution.hours_spent }}</td>
       <th scope="row">{{ contribution.cash_spent }}</th>
       <th scope="row">{{ contribution.user.email }}</th>
