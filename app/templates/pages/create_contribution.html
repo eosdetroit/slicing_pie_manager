@@ -41,15 +41,15 @@
                 </div>
                 <div class="form-group ">
                   <label for="hours_spent">Hours Spent</label>
-                  <input type="number" step="any" class="form-control" id="hours_spent" name="hours_spent" placeholder="Enter Hours Spent" value="">
+                  <input type="number" step="any" class="form-control" id="hours_spent" name="hours_spent" placeholder="Enter Hours Spent" value="{{ form.cash_spent.default }}">
                 </div>
                 <div class="form-group ">
                   <label for="cash_spent">Cash Spent</label>
-                  <input type="number" step="any" class="form-control" id="cash_spent" name="cash_spent" placeholder="Enter Cash Spent" value="">
+                  <input type="number" step="any" class="form-control" id="cash_spent" name="cash_spent" placeholder="Enter Cash Spent" value="{{ form.cash_spent.default }}">
                 </div>
                 <div class="form-group ">
                   <label for="contribution_date">Contribution Date</label>
-                  <input type="datetime" class="form-control" id="contribution_date" name="contribution_date" placeholder="Enter Contribution Date" value="">
+                  <input type="datetime" class="flatpickr" class="form-control" id="contribution_date" name="contribution_date" placeholder="Enter Contribution Date" value="">
                 </div>
           </div>
           <div class="card-footer ">

@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
 
     # Relationships
-    contributions = db.relationship('Contribution', backref='users', lazy=True)
+    contributions = db.relationship('Contribution', back_populates='user', lazy=True)
     roles = db.relationship('Role', secondary='users_roles',
                             backref=db.backref('users', lazy='dynamic'))
 
@@ -92,13 +92,14 @@ class Contribution(db.Model):
     __tablename__ = 'contributions'
 
     id = db.Column(db.Integer, primary_key=True)
+    user = db.relationship('User', back_populates='contributions')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     task = db.Column(db.String(80), nullable=False)
     work_rate = db.relationship('WorkRate', back_populates='contributions')
     work_rate_id = db.Column(db.Integer, db.ForeignKey('work_rates.id'))
     hours_spent = db.Column(db.Float, default=0.0)
     cash_spent = db.Column(db.Float, default=0.0)
-    status = db.Column(db.Enum(ContributionStatus), default=ContributionStatus.PROPOSED)
+    status = db.Column(db.String(36), default=ContributionStatus.PROPOSED.value)
     contribution_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 
@@ -110,7 +111,7 @@ class ContributionForm(FlaskForm):
         validators.Length(max=80)])
     hours_spent = DecimalField('Hours spent', validators=None, default=0)
     cash_spent = DecimalField('Cash spent', validators=None, default=0)
-    contribution_date = DateTimeField()
+    contribution_date = DateTimeField(format='%Y-%m-%d %H:%M')
     submit = SubmitField('Create Contribution')
 
 

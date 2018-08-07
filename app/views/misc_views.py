@@ -17,7 +17,9 @@ main_blueprint = Blueprint('main', __name__, template_folder='templates')
 def member_page():
     if not current_user.is_authenticated:
         return redirect(url_for('user.login'))
-    return render_template('pages/member_base.html')
+    work_rates = WorkRate.query.all()
+    contributions = Contribution.query.order_by(Contribution.contribution_date.desc()).all()
+    return render_template('pages/member_base.html', work_rates=work_rates, contributions=contributions)
 
 
 @main_blueprint.route('/create_contribution', methods=['GET', 'POST'])
@@ -27,11 +29,16 @@ def create_contribution_page():
     form.work_rate.choices = [(rate.id, rate.category) for rate in WorkRate.query.all()]
     # TODO: save contribution object.
     if request.method == 'POST' and form.validate():
-        contribution = Contribution(user_id=current_user.id, task=form.task.data,
-            work_rate_id=form.work_rate.data, hours_spent=form.hours_spent.data, 
-            cash_spent=form.cash_spent.data, contribution_date=form.contribution_date.data)
+        contribution = Contribution(
+            user_id=current_user.id, 
+            task=form.task.data,
+            work_rate_id=form.work_rate.data, 
+            hours_spent=form.hours_spent.data, 
+            cash_spent=form.cash_spent.data, 
+            contribution_date=form.contribution_date.data)
         db.session.add(contribution)
         db.session.commit()
+        return redirect(url_for('main.member_page'))
     return render_template('pages/create_contribution.html', form=form)
 
 
@@ -95,7 +102,7 @@ def create_work_rate_page():
                         slices_per_hour=form.slices_per_hour.data)
             db.session.add(work_rate)
             db.session.commit()
-        return redirect(url_for('main.user_admin_page'))
+            return redirect(url_for('main.member_page'))
     return render_template('pages/admin/create_work_rate.html',
                            form=form)
 
