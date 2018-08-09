@@ -28,6 +28,8 @@ def create_contribution_page():
     form = ContributionForm(request.form)
     form.work_rate.choices = [(rate.id, rate.category) for rate in WorkRate.query.all()]
     form.role.choices = [(group.id, group.name) for group in Role.query.filter(Role.name != "admin").all()]
+    contributions = (Contribution.query.filter(Contribution.user_id == current_user.id)
+                                      .order_by(Contribution.contribution_date.desc()).all())
     # TODO: save contribution object.
     if request.method == 'POST' and form.validate():
         contribution = Contribution(
@@ -41,7 +43,7 @@ def create_contribution_page():
         db.session.add(contribution)
         db.session.commit()
         return redirect(url_for('main.member_page'))
-    return render_template('pages/create_contribution.html', form=form)
+    return render_template('pages/create_contribution.html', form=form, contributions=contributions)
 
 
 # The Admin page is accessible to users with the 'admin' role
