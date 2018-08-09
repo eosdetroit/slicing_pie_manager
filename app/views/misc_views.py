@@ -22,12 +22,13 @@ def member_page():
     return render_template('pages/member_base.html', work_rates=work_rates, contributions=contributions)
 
 
-@main_blueprint.route('/create_contribution', methods=['GET', 'POST'])
+@main_blueprint.route('/contributions', methods=['GET', 'POST'])
 @login_required
-def create_contribution_page():
+def manage_contribution_page():
     form = ContributionForm(request.form)
     form.work_rate.choices = [(rate.id, rate.category) for rate in WorkRate.query.all()]
-    form.role.choices = [(group.id, group.name) for group in Role.query.filter(Role.name != "admin").all()]
+    form.role.choices = [(group.id, group.name) for group 
+                         in Role.query.filter(Role.name != "admin", Role.name != "chair").all()]
     contributions = (Contribution.query.filter(Contribution.user_id == current_user.id)
                                       .order_by(Contribution.contribution_date.desc()).all())
 
@@ -44,6 +45,12 @@ def create_contribution_page():
         db.session.commit()
         return redirect(url_for('main.member_page'))
     return render_template('pages/create_contribution.html', form=form, contributions=contributions)
+
+
+@main_blueprint.route('/contributions/<contribution_id>', methods=['POST'])
+@login_required
+def edit_contribution(contribution_id):
+    pass
 
 
 # The Admin page is accessible to users with the 'admin' role
