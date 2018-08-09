@@ -30,7 +30,7 @@ def create_contribution_page():
     form.role.choices = [(group.id, group.name) for group in Role.query.filter(Role.name != "admin").all()]
     contributions = (Contribution.query.filter(Contribution.user_id == current_user.id)
                                       .order_by(Contribution.contribution_date.desc()).all())
-    # TODO: save contribution object.
+
     if request.method == 'POST' and form.validate():
         contribution = Contribution(
             user_id=current_user.id, 
