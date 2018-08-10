@@ -5,7 +5,7 @@ from flask import request, url_for, flash, send_from_directory, jsonify, render_
 from flask_user import current_user, login_required, roles_accepted
 
 from app import db
-from app.models.user_models import UserProfileForm, User, Role, UsersRoles, Contribution, ContributionForm, WorkRate, WorkRateForm
+from app.models.user_models import UserProfileForm, User, Role, UsersRoles, Contribution, ContributionStatus, ContributionForm, WorkRate, WorkRateForm
 import uuid, json, os
 import datetime
 
@@ -52,11 +52,11 @@ def manage_contribution_page():
 @login_required
 def edit_contribution(contribution_id):
     data = request.form.to_dict()
-    print(data)
     if request.method == 'POST':
         contribution = (Contribution.query.filter(
             Contribution.id == contribution_id, 
-            current_user.id == Contribution.user_id)
+            current_user.id == Contribution.user_id,
+            Contribution.status == ContributionStatus.PROPOSED.value)
             .update(
                 dict(
                     task=data['task'],
@@ -67,6 +67,20 @@ def edit_contribution(contribution_id):
                     contribution_date=datetime.datetime.strptime(data['contribution_date'], "%Y-%m-%d %H:%M:%S")
                 )
             )
+        )
+        db.session.commit()
+    return  redirect(url_for('main.manage_contribution_page'))
+
+@main_blueprint.route('/contributions/delete/<contribution_id>', methods=['POST'])
+@login_required
+def delete_contribution(contribution_id):
+    data = request.form.to_dict()
+    if request.method == 'POST':
+        contribution = (Contribution.query.filter(
+            Contribution.id == contribution_id, 
+            current_user.id == Contribution.user_id,
+            Contribution.status == ContributionStatus.PROPOSED.value)
+            .delete()
         )
         db.session.commit()
     return  redirect(url_for('main.manage_contribution_page'))

@@ -16,7 +16,23 @@ $(function () {
        $editForm.find("#edit_hours_spent").val(hours_spent);
        $editForm.find("#edit_cash_spent").val(cash_spent);
        $editForm.find("#edit_contribution_date").val(contribution_date);
+   });
 
+   $(".delete-contribution").on('click', function () {
+       var $row = $(this).parents("tr");
+       var contribution_id = $row.children(".contribution_id").text();
+       var url = "/contributions/delete/" + contribution_id;
+       console.log(url);
+
+       var csrf_token = $("#csrf_token").val();
+       $.ajax({
+       	   url: url,
+       	   type: "POST",
+       	   data: { csrf_token: csrf_token },
+       	   success: function (result) {
+               $row.remove();
+       	   }
+       })
    });
    $(".flatpickr").datetimepicker({
 	   inline: true,
