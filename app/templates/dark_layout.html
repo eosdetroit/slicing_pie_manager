@@ -12,19 +12,12 @@
 
         <!-- stylesheets -->
         <link href="{{ url_for('static', filename='css/flag-icon-css/css/flag-icon.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='bootstrap-4.1.3-dist/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
         <link href="{{ url_for('static', filename='css/simple-line-icons/css/simple-line-icons.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.5.1/flatpickr.css" rel="stylesheet">
-
-        <!-- javascript -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/pace-progress/pace.min.js') }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.5.1/flatpickr.min.js"></script>
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        {% block styles %}{% endblock %}
     </head>
     <body>
         {% block body %}
@@ -107,14 +100,24 @@
           </div>
         </footer>
       </div>
+      <div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script src="{{ url_for('static', filename='bootstrap-4.1.3-dist/js/bootstrap.min.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="{{ url_for('static', filename='js/pace-progress/pace.min.js') }}"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script>
             // Hide loader
             (function() {
                 $(".alert").fadeTo(4000, 500).slideUp(500, function(){
                     $(".alert").slideUp(500);
                 });
-                flatpickr(".flatpickr", {enableTime: true});
             })();
         </script>
+        {% block scripts %}{% endblock %}
+      </div>
     </body>
 </html>

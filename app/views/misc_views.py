@@ -1,6 +1,6 @@
 # Copyright 2017 Twin Tech Labs. All rights reserved
 
-from flask import Blueprint, redirect, render_template, current_app
+from flask import Blueprint, redirect, render_template, current_app, jsonify
 from flask import request, url_for, flash, send_from_directory, jsonify, render_template_string
 from flask_user import current_user, login_required, roles_accepted
 
@@ -26,6 +26,7 @@ def member_page():
 @login_required
 def manage_contribution_page():
     form = ContributionForm(request.form)
+    form2 = ContributionForm(request.form)
     form.work_rate.choices = [(rate.id, rate.category) for rate in WorkRate.query.all()]
     form.role.choices = [(group.id, group.name) for group 
                          in Role.query.filter(Role.name != "admin", Role.name != "chair").all()]
@@ -43,14 +44,32 @@ def manage_contribution_page():
             contribution_date=form.contribution_date.data)
         db.session.add(contribution)
         db.session.commit()
-        return redirect(url_for('main.member_page'))
-    return render_template('pages/create_contribution.html', form=form, contributions=contributions)
+        return redirect(url_for('main.manage_contribution_page'))
+    return render_template('pages/manage_contributions.html', form=form, form2=form2, contributions=contributions)
 
 
 @main_blueprint.route('/contributions/<contribution_id>', methods=['POST'])
 @login_required
 def edit_contribution(contribution_id):
-    pass
+    data = request.form.to_dict()
+    print(data)
+    if request.method == 'POST':
+        contribution = (Contribution.query.filter(
+            Contribution.id == contribution_id, 
+            current_user.id == Contribution.user_id)
+            .update(
+                dict(
+                    task=data['task'],
+                    work_rate_id=data['work_rate'],
+                    role_id=data['role'],
+                    hours_spent=data['hours_spent'],
+                    cash_spent=data['cash_spent'],
+                    contribution_date=datetime.datetime.strptime(data['contribution_date'], "%Y-%m-%d %H:%M:%S")
+                )
+            )
+        )
+        db.session.commit()
+    return  redirect(url_for('main.manage_contribution_page'))
 
 
 # The Admin page is accessible to users with the 'admin' role

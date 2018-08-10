@@ -35,7 +35,6 @@ def create_users():
     admin_role = find_or_create_role('admin', u'Admin')
     chair_role = find_or_create_role('chair', u'Chair')
 
-
     # Work group roles
     find_or_create_role('bounty_system', u'Bounty System')
     find_or_create_role('governance', u'Governance')

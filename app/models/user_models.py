@@ -116,7 +116,7 @@ class ContributionForm(FlaskForm):
         validators.Length(max=255)])
     hours_spent = DecimalField('Hours spent', validators=None, default=0)
     cash_spent = DecimalField('Cash spent', validators=None, default=0)
-    contribution_date = DateTimeField(format='%Y-%m-%d %H:%M')
+    contribution_date = DateTimeField(format='%Y-%m-%d %H:%M:%S')
     submit = SubmitField('Create Contribution')
 
 
