@@ -34,7 +34,7 @@
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Role</th>
+                  <th>Roles</th>
                   <th>Email</th>
                   <th>Confirmed</th>
                   <th>Actions</th>
@@ -44,7 +44,11 @@
                 {% for user in users %}
                 <tr>
                   <td>{{user.name()}}</td>
-                  <td>{{user.role()}}</td>
+                  <td>
+                    {% for role in user.roles %}
+                      {{ role.label }}{{ "," if not loop.last }}
+                    {% endfor %}
+                  </td>
                   <td>{{user.email}}</td>
                   <td>{{user.confirmed_at}}</td>
                   <tD>

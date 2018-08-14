@@ -60,15 +60,21 @@
                       </li>
                     </ul>
                   </li>
+                  {% if current_user.has_role('admin') or current_user.has_role('chair') %}
                   <li class="nav-title">Administration</li>
+                  {% endif %}
+                  {% if current_user.has_role('admin') %}
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.user_admin_page') }}">
                       <i class="nav-icon icon-drop"></i> Manage Users</a>
                   </li>
+                  {% endif %}
+                  {% if current_user.has_role('chair') %}
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.create_work_rate_page') }}">
                       <i class="nav-icon icon-drop"></i> Manage Work Rates</a>
                   </li>
+                  {% endif %}
                 </ul>
               </nav>
             </div>
