@@ -1,0 +1,70 @@
+{% extends "common/dark_base.html" %}  {# common/page_base.html extends layout.html #}
+
+{% block styles %}
+{% endblock %}
+{% block content %}
+
+{% from "common/form_macros.html" import render_field, render_submit_field %}
+  <!-- Breadcrumb-->
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">Home</li>
+    <li class="breadcrumb-item">Dashboard</li>
+    <li class="breadcrumb-item active">Review Contributions</li>
+  </ol>
+  <div class="container-fluid">
+    <div class="animated fadeIn">
+      <div class="card ">
+        <div class="card-header">
+          <strong>Pending Contributions</strong>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Task</th>
+                <th scope="col">Category</th>
+                <th scope="col">Working Group</th>
+                <th scope="col">Hours Spent</th>
+                <th scope="col">Cash Spent</th>
+                <th scope="col">Contributor</th>
+                <th scope="col">Status</th>
+                <th scope="col">Contribution Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for contribution in pending_contributions %}
+              <tr>
+                <td class="contribution_id" scope="row">{{ contribution.id }}</td>
+                <td class="task" scope="row">{{ contribution.task }}</td>
+                <td class="work_rate" data-value="{{ contribution.work_rate.id }}" scope="row">{{ contribution.work_rate.category }}</td>
+                <td class="role" data-value="{{ contribution.role.id }}" scope="row">{{ contribution.role.label }}</td>
+                <td class="hours_spent" scope="row">{{ contribution.hours_spent }}</td>
+                <td class="cash_spent" scope="row">{{ contribution.cash_spent }}</td>
+                <td scope="row">{{ contribution.user.email }}</td>
+                <td class="status" scope="row">{{ contribution.status }}</td>
+                <td class="contribution_date" scope="row">{{ contribution.contribution_date }}</td>
+                <td scope="row">
+                <button type="button" class="btn btn-default approve-contribution" aria-label="Approve Contribution">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-default deny-contribution" aria-label="Deny Contribution">
+                  <i class="fa fa-flag" aria-hidden="true"></i>
+                </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var csrf_token = "{{ csrf_token() }}";
+</script>
+<script src="{{ url_for('static', filename='js/page/review_contributions.js') }}"></script>
+{% endblock %}

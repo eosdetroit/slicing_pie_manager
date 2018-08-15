@@ -75,6 +75,12 @@
                       <i class="nav-icon icon-drop"></i> Manage Work Rates</a>
                   </li>
                   {% endif %}
+                  {% if current_user.has_role('chair') %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.review_contributions_page') }}">
+                      <i class="nav-icon icon-drop"></i> Review Contributions</a>
+                  </li>
+                  {% endif %}
                 </ul>
               </nav>
             </div>

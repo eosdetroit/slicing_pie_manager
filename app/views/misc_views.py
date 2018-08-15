@@ -26,7 +26,6 @@ def member_page():
 @login_required
 def manage_contribution_page():
     form = ContributionForm(request.form)
-    form2 = ContributionForm(request.form)
     form.work_rate.choices = [(rate.id, rate.category) for rate in WorkRate.query.all()]
     form.role.choices = [(group.id, group.name) for group 
                          in Role.query.filter(Role.name != "admin", Role.name != "chair").all()]
@@ -45,45 +44,88 @@ def manage_contribution_page():
         db.session.add(contribution)
         db.session.commit()
         return redirect(url_for('main.manage_contribution_page'))
-    return render_template('pages/manage_contributions.html', form=form, form2=form2, contributions=contributions)
+    return render_template('pages/manage_contributions.html', form=form, contributions=contributions)
 
 
 @main_blueprint.route('/contributions/<contribution_id>', methods=['POST'])
 @login_required
 def edit_contribution(contribution_id):
     data = request.form.to_dict()
-    if request.method == 'POST':
-        contribution = (Contribution.query.filter(
-            Contribution.id == contribution_id, 
-            current_user.id == Contribution.user_id,
-            Contribution.status == ContributionStatus.PROPOSED.value)
-            .update(
-                dict(
-                    task=data['task'],
-                    work_rate_id=data['work_rate'],
-                    role_id=data['role'],
-                    hours_spent=data['hours_spent'],
-                    cash_spent=data['cash_spent'],
-                    contribution_date=datetime.datetime.strptime(data['contribution_date'], "%Y-%m-%d %H:%M:%S")
-                )
+    contribution = (Contribution.query.filter(
+        Contribution.id == contribution_id, 
+        current_user.id == Contribution.user_id,
+        Contribution.status == ContributionStatus.PROPOSED.value)
+        .update(
+            dict(
+                task=data['task'],
+                work_rate_id=data['work_rate'],
+                role_id=data['role'],
+                hours_spent=data['hours_spent'],
+                cash_spent=data['cash_spent'],
+                contribution_date=datetime.datetime.strptime(data['contribution_date'], "%Y-%m-%d %H:%M:%S")
             )
         )
-        db.session.commit()
+    )
+    db.session.commit()
     return  redirect(url_for('main.manage_contribution_page'))
 
 @main_blueprint.route('/contributions/delete/<contribution_id>', methods=['POST'])
 @login_required
 def delete_contribution(contribution_id):
-    data = request.form.to_dict()
-    if request.method == 'POST':
-        contribution = (Contribution.query.filter(
-            Contribution.id == contribution_id, 
-            current_user.id == Contribution.user_id,
-            Contribution.status == ContributionStatus.PROPOSED.value)
-            .delete()
-        )
-        db.session.commit()
+    contribution = (Contribution.query.filter(
+        Contribution.id == contribution_id, 
+        current_user.id == Contribution.user_id,
+        Contribution.status == ContributionStatus.PROPOSED.value)
+        .delete()
+    )
+    db.session.commit()
     return  redirect(url_for('main.manage_contribution_page'))
+
+
+@main_blueprint.route('/contributions/review', methods=['GET', 'POST'])
+@roles_accepted('chair')
+def review_contributions_page():
+    working_group_roles = ([role.id for role in current_user.roles 
+                            if role.name != "admin" and role.name != "chair"])
+    print(working_group_roles)
+    pending_contributions = (Contribution.query.filter(
+        Contribution.role_id.in_(working_group_roles), 
+        Contribution.status == ContributionStatus.PROPOSED.value).all())
+    print(pending_contributions)
+    return render_template('pages/review_contributions.html', 
+                           pending_contributions=pending_contributions)
+
+
+@main_blueprint.route('/contributions/review/approve/<contribution_id>', methods=['POST'])
+@roles_accepted('chair')
+def approve_contribution(contribution_id):
+    contribution = (Contribution.query.filter(
+        Contribution.id == contribution_id, 
+        Contribution.status == ContributionStatus.PROPOSED.value)
+        .update(
+            dict(
+                status=ContributionStatus.APPROVED.value
+            )
+        )
+    )
+    db.session.commit()
+    return redirect(url_for('main.review_contributions_page'))
+
+
+@main_blueprint.route('/contributions/review/deny/<contribution_id>', methods=['POST'])
+@roles_accepted('chair')
+def deny_contribution(contribution_id):
+    contribution = (Contribution.query.filter(
+        Contribution.id == contribution_id, 
+        Contribution.status == ContributionStatus.PROPOSED.value)
+        .update(
+            dict(
+                status=ContributionStatus.DENIED.value
+            )
+        )
+    )
+    db.session.commit()
+    return redirect(url_for('main.review_contributions_page'))
 
 
 # The Admin page is accessible to users with the 'admin' role

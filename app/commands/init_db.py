@@ -36,12 +36,14 @@ def create_users():
     chair_role = find_or_create_role('chair', u'Chair')
 
     # Work group roles
-    find_or_create_role('bounty_system', u'Bounty System')
-    find_or_create_role('governance', u'Governance')
-    find_or_create_role('development', u'Development')
+    bounty_system_role = find_or_create_role('bounty_system', u'Bounty System')
+    governance_role = find_or_create_role('governance', u'Governance')
+    development_role = find_or_create_role('development', u'Development')
 
     # Add users
-    user = find_or_create_user(u'Admin', u'Example', u'admin@example.com', 'Password1', [admin_role, chair_role])
+    user = find_or_create_user(
+        u'Admin', u'Example', u'admin@example.com', 'Password1', 
+        [admin_role, chair_role, bounty_system_role])
 
     user = find_or_create_user(u'Member', u'Example', u'member@example.com', 'Password1')
 
