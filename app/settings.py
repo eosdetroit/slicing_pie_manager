@@ -24,5 +24,8 @@ USER_ENABLE_EMAIL = True  # Register with Email
 USER_ENABLE_REGISTRATION = True  # Allow new users to register
 USER_ENABLE_RETYPE_PASSWORD = True  # Prompt for `retype password` in:
 USER_ENABLE_USERNAME = False  # Register and Login with username
+USER_ENABLE_INVITATION = True
+USER_REQUIRE_INVITATION = True
+
 USER_AFTER_LOGIN_ENDPOINT = 'main.member_page'
 USER_AFTER_LOGOUT_ENDPOINT = 'main.member_page'

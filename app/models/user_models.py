@@ -1,6 +1,7 @@
 # Copyright 2014 SolidBuilds.com. All rights reserved
 #
 # Authors: Ling Thio <ling.thio@gmail.com>, Matt Hogan <matt@twintechlabs.io>
+# 
 import enum
 from datetime import datetime
 
@@ -46,6 +47,16 @@ class User(db.Model, UserMixin):
 
     def name(self):
         return self.first_name + " " + self.last_name
+
+
+class UserInvitation(db.Model):
+        __tablename__ = 'user_invites'
+        id = db.Column(db.Integer, primary_key=True)
+        email = db.Column(db.String(255), nullable=False)
+        # save the user of the invitee
+        invited_by_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+        # token used for registration page to identify user registering
+        token = db.Column(db.String(100), nullable=False, server_default='')
 
 
 # Define the Role data model
