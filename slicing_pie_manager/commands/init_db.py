@@ -9,8 +9,8 @@ import datetime
 from flask import current_app
 from flask_script import Command
 
-from app import db
-from app.models.user_models import User, Role
+from slicing_pie_manager import db
+from slicing_pie_manager.models.user_models import User, Role
 
 class InitDbCommand(Command):
     """ Initialize the database."""

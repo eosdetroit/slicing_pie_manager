@@ -9,7 +9,7 @@ from flask_user import UserMixin
 from flask_user.forms import RegisterForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, DecimalField, SelectField, DateTimeField, validators
-from app import db
+from slicing_pie_manager import db
 
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!

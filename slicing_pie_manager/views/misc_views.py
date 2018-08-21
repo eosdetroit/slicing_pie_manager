@@ -4,8 +4,8 @@ from flask import Blueprint, redirect, render_template, current_app, jsonify
 from flask import request, url_for, flash, send_from_directory, jsonify, render_template_string
 from flask_user import current_user, login_required, roles_accepted
 
-from app import db
-from app.models.user_models import UserProfileForm, User, Role, UsersRoles, Contribution, ContributionStatus, ContributionForm, WorkRate, WorkRateForm
+from slicing_pie_manager import db
+from slicing_pie_manager.models.user_models import UserProfileForm, User, Role, UsersRoles, Contribution, ContributionStatus, ContributionForm, WorkRate, WorkRateForm
 import uuid, json, os
 import datetime
 

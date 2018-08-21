@@ -29,9 +29,9 @@ def create_app(extra_config_settings={}):
 
     # Load App Config settings
     # Load common settings from 'app/settings.py' file
-    app.config.from_object('app.settings')
+    app.config.from_object('slicing_pie_manager.settings')
     # Load local settings from 'app/local_settings.py'
-    app.config.from_object('app.local_settings')
+    app.config.from_object('slicing_pie_manager.local_settings')
     # Load extra config settings from 'extra_config_settings' param
     app.config.update(extra_config_settings)
 
@@ -50,14 +50,14 @@ def create_app(extra_config_settings={}):
     csrf_protect.init_app(app)
 
     # Register blueprints
-    from app.views.misc_views import main_blueprint
-    from app.views.apis import api_blueprint
+    from slicing_pie_manager.views.misc_views import main_blueprint
+    from slicing_pie_manager.views.apis import api_blueprint
     app.register_blueprint(main_blueprint)
     app.register_blueprint(api_blueprint)
     csrf_protect.exempt(api_blueprint)
     
     # Register blueprints
-    from app.views.misc_views import main_blueprint
+    from slicing_pie_manager.views.misc_views import main_blueprint
     app.register_blueprint(main_blueprint)
 
     # Define bootstrap_is_hidden_field for flask-bootstrap's bootstrap_wtf.html
