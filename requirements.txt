@@ -13,6 +13,8 @@ Flask-User==0.6.21
 Flask-WTF==0.14.1
 Flask-SeaSurf==0.2.2
 
+uwsgi
+
 # Automated tests
 pytest==3.0.5
 pytest-cov==2.4.0
