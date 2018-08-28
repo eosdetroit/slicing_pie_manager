@@ -115,4 +115,4 @@ ENV/
 # --------------------------------
 
 app.sqlite
-app/local_settings.py
+slicing_pie_manager/local_settings.py
