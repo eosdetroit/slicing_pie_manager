@@ -13,6 +13,7 @@ Flask-User==0.6.21
 Flask-WTF==0.14.1
 Flask-SeaSurf==0.2.2
 
+PyMySQL==0.9.2
 uwsgi
 
 # Automated tests
