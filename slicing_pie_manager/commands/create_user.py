@@ -22,11 +22,6 @@ class CreateUserCommand(Command):
 
 
     def run(self, email, first_name, last_name, password, roles):
-        print(email)
-        print(first_name)
-        print(last_name)
-        print(password)
-        print(roles)
         find_or_create_user(email, first_name, last_name, password, roles)
         db.session.commit()
 

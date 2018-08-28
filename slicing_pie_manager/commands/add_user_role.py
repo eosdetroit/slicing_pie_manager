@@ -14,29 +14,21 @@ class AddUserRoleCommand(Command):
 
     option_list = (
         Option('--email', '-e', dest='email'),
-        Option('--fname', '-f', dest='first_name'),
-        Option('--lname', '-l', dest='last_name'),
-        Option('--password', '-p', dest='password'),
-        Option('--roles', '-r', dest='roles', nargs='*')
+        Option('--roles', '-r', dest='roles', nargs="*")
     )
 
 
-    def run(self, email, first_name, last_name, password, roles):
-        find_or_create_user(email, first_name, last_name, password, roles)
+    def run(self, email, roles):
+        add_role_to_user(email, roles)
+        db.session.commit()
 
 
-def find_or_create_user(first_name, last_name, email, password, roles=None):
+def add_role_to_user(email, roles):
     """ Find existing user or create new user """
     user = User.query.filter(User.email == email).first()
-    if not user:
-        user = User(email=email,
-                    first_name=first_name,
-                    last_name=last_name,
-                    password=current_app.user_manager.hash_password(password),
-                    active=True,
-                    confirmed_at=datetime.datetime.utcnow())
-        if roles:
-            user.roles.extend(roles)
+    if user and roles:
+        role_objs = Role.query.filter(Role.name.in_(roles)).all()
+        user.roles.extend(role_objs)
         db.session.add(user)
     return user
 
