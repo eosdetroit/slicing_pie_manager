@@ -36,7 +36,7 @@ class User(db.Model, UserMixin):
 
     def has_role(self, role):
         for item in self.roles:
-            if item.name == 'admin':
+            if item.name == role:
                 return True
         return False
 
