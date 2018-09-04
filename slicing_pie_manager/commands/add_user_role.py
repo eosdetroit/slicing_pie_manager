@@ -10,7 +10,7 @@ from slicing_pie_manager.models.user_models import User, Role
 
 
 class AddUserRoleCommand(Command):
-    """ Initialize the database."""
+    """ Add roles to user."""
 
     option_list = (
         Option('--email', '-e', dest='email'),

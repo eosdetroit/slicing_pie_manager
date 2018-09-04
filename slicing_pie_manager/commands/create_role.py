@@ -14,7 +14,7 @@ from slicing_pie_manager.models.user_models import User, Role
 
 
 class CreateRoleCommand(Command):
-    """ Initialize the database."""
+    """ Create a new role."""
 
     option_list = (
         Option('--name', '-n', dest='name'),
