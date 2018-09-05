@@ -19,7 +19,24 @@ def member_page():
         return redirect(url_for('user.login'))
     work_rates = WorkRate.query.all()
     contributions = Contribution.query.order_by(Contribution.contribution_date.desc()).all()
-    return render_template('pages/member_base.html', work_rates=work_rates, contributions=contributions)
+    aggregate_slices_per_user = {}
+    total_slices = 0
+    for contribution in contributions:
+        if contribution.status == ContributionStatus.APPROVED.value:
+            total_slices = total_slices + contribution.total_slices()
+            if contribution.user.name() in aggregate_slices_per_user:
+                aggregate_slices_per_user[contribution.user.name()] = (aggregate_slices_per_user[contribution.user.name()] 
+                    + contribution.total_slices())
+            else:
+                aggregate_slices_per_user[contribution.user.name()] = contribution.total_slices()
+    slice_percentages = []
+    for full_name, slices in aggregate_slices_per_user.items():
+        slice_percentages.append({
+            'name': full_name,
+            'y': (slices / total_slices) * 100
+        })
+    return render_template('pages/member_base.html', work_rates=work_rates, 
+        contributions=contributions, slice_percentages=slice_percentages)
 
 
 @main_blueprint.route('/contributions', methods=['GET', 'POST'])
@@ -179,7 +196,7 @@ def delete_user_page():
 
 
 @main_blueprint.route('/create_work_rate', methods=['GET', 'POST'])
-@roles_accepted('admin')
+@roles_accepted('chair')
 def create_work_rate_page():
     form = WorkRateForm(request.form)
     if request.method == 'POST' and form.validate():

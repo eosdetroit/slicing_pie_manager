@@ -116,6 +116,8 @@ class Contribution(db.Model):
     status = db.Column(db.String(36), default=ContributionStatus.PROPOSED.value)
     contribution_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+    def total_slices(self):
+        return (self.hours_spent * self.work_rate.slices_per_hour) + self.cash_spent
 
 class ContributionForm(FlaskForm):
     work_rate = SelectField('Work Category', validators=[

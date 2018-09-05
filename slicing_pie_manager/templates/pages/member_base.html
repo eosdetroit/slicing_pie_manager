@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<div id="pie-chart"></div>
 <h2>All Contributions</h2>
 <div class="table-responsive">
   <table class="table">
@@ -57,4 +58,12 @@
     </tbody>
   </table>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var csrf_token = "{{ csrf_token() }}";
+  var slice_percentages = {{ slice_percentages|tojson|safe }};
+</script>
+<script src="{{ url_for('static', filename='js/page/dashboard.js') }}"></script>
 {% endblock %}
