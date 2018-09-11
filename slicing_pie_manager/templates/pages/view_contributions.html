@@ -1,12 +1,13 @@
 {% extends "common/dark_base.html" %}  {# common/page_base.html extends layout.html #}
 
 {% block styles %}
+<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
 <h2>All Contributions</h2>
 <div class="table-responsive">
-  <table class="table">
+  <table class="table datatable">
     <thead>
       <tr>
         <th scope="col">ID</th>
@@ -40,4 +41,5 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 {% endblock %}

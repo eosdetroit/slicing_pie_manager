@@ -17,6 +17,8 @@
         <link href="{{ url_for('static', filename='css/simple-line-icons/css/simple-line-icons.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+
         {% block styles %}{% endblock %}
     </head>
     <body>
@@ -132,6 +134,8 @@
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/popper.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
 
         <script>
             // Hide loader
@@ -139,9 +143,12 @@
                 $(".alert").fadeTo(4000, 500).slideUp(500, function(){
                     $(".alert").slideUp(500);
                 });
+                $('.datatable').DataTable();
             })();
         </script>
-        {% block scripts %}{% endblock %}
+        {% block scripts %}
+
+        {% endblock %}
       </div>
     </body>
 </html>
