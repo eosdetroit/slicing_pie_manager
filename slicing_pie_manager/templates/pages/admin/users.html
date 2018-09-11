@@ -26,8 +26,7 @@
     <div class="animated fadeIn">
       <div class="card ">
           <div class="card-header ">
-            <strong>System Users</strong>
-            <a href={{ url_for('main.create_user_page') }} class="btn btn-pill btn-sm btn-primary pull-right">Create User</a>
+            <strong>Users</strong>
           </div>
           <div class="card-body ">
             <table class="table table-hover table-striped" style="padding-top: 50px;">
@@ -37,7 +36,6 @@
                   <th>Roles</th>
                   <th>Email</th>
                   <th>Confirmed</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -51,11 +49,6 @@
                   </td>
                   <td>{{user.email}}</td>
                   <td>{{user.confirmed_at}}</td>
-                  <tD>
-                    <div class="btn-group" role="group" aria-label="...">
-                      <a href="{{ url_for('main.delete_user_page', user_id=user.id) }}"><i class="fa fa-remove"></i></a>
-                    </div>
-                  </tD>
                 </tr>
                 {% endfor %}
               </tbody>

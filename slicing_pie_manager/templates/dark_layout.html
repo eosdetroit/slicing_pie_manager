@@ -44,6 +44,14 @@
                       <i class="nav-icon icon-speedometer"></i> Dashboard
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.view_contributions_page') }}">
+                      <i class="nav-icon icon-drop"></i> View Contributions</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.user_admin_page') }}">
+                      <i class="nav-icon icon-drop"></i> View User Roster</a>
+                  </li>
                   <li class="nav-item nav-dropdown open">
                     <a class="nav-link nav-dropdown-toggle" href="#">
                       <i class="nav-icon icon-bell"></i> My Account</a>
@@ -57,10 +65,6 @@
                           <i class="nav-icon icon-drop"></i> Password</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('main.view_contributions_page') }}">
-                          <i class="nav-icon icon-drop"></i> View Contributions</a>
-                      </li>
-                      <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.manage_contribution_page') }}">
                           <i class="nav-icon icon-drop"></i> Manage Contributions</a>
                       </li>
@@ -68,12 +72,6 @@
                   </li>
                   {% if current_user.has_role('admin') or current_user.has_role('chair') %}
                   <li class="nav-title">Administration</li>
-                  {% endif %}
-                  {% if current_user.has_role('admin') %}
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.user_admin_page') }}">
-                      <i class="nav-icon icon-drop"></i> Manage Users</a>
-                  </li>
                   {% endif %}
                   {% if current_user.has_role('chair') %}
                   <li class="nav-item">

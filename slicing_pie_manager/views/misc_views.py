@@ -160,7 +160,6 @@ def admin_page():
     return render_template('pages/admin_page.html')
 
 @main_blueprint.route('/users')
-@roles_accepted('admin')
 def user_admin_page():
     users = User.query.all()
     return render_template('pages/admin/users.html',
