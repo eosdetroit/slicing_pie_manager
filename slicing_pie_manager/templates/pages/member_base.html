@@ -3,39 +3,6 @@
 {% block content %}
 
 <div id="pie-chart"></div>
-<h2>All Contributions</h2>
-<div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Task</th>
-        <th scope="col">Category</th>
-        <th scope="col">Working Group</th>
-        <th scope="col">Hours Spent</th>
-        <th scope="col">Cash Spent</th>
-        <th scope="col">Contributor</th>
-        <th scope="col">Status</th>
-        <th scope="col">Contribution Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for contribution in contributions %}
-      <tr>
-        <th scope="row">{{ contribution.id }}</th>
-        <th scope="row">{{ contribution.task }}</th>
-        <td scope="row">{{ contribution.work_rate.category }}</td>
-        <td scope="row">{{ contribution.role.label }}</td>
-        <td scope="row">{{ contribution.hours_spent }}</td>
-        <th scope="row">{{ contribution.cash_spent }}</th>
-        <th scope="row">{{ contribution.user.email }}</th>
-        <th scope="row">{{ contribution.status }}</th>
-        <th scope="row">{{ contribution.contribution_date }}</th>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
 
 <h2>Work Rates</h2>
 <div class="table-responsive">

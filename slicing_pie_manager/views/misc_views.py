@@ -35,8 +35,16 @@ def member_page():
             'name': full_name,
             'y': (slices / total_slices) * 100
         })
-    return render_template('pages/member_base.html', work_rates=work_rates, 
-        contributions=contributions, slice_percentages=slice_percentages)
+    return render_template('pages/member_base.html', work_rates=work_rates,
+                           slice_percentages=slice_percentages)
+
+
+@main_blueprint.route('/view_contributions', methods=['GET'])
+@login_required
+def view_contributions_page():
+    contributions = (Contribution.query.filter(Contribution.user_id == current_user.id)
+                                      .order_by(Contribution.contribution_date.desc()).all())
+    return render_template('pages/view_contributions.html', contributions=contributions)
 
 
 @main_blueprint.route('/contributions', methods=['GET', 'POST'])
