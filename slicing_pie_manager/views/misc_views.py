@@ -42,8 +42,7 @@ def member_page():
 @main_blueprint.route('/view_contributions', methods=['GET'])
 @login_required
 def view_contributions_page():
-    contributions = (Contribution.query.filter(Contribution.user_id == current_user.id)
-                                      .order_by(Contribution.contribution_date.desc()).all())
+    contributions = (Contribution.query.order_by(Contribution.contribution_date.desc()).all())
     return render_template('pages/view_contributions.html', contributions=contributions)
 
 
