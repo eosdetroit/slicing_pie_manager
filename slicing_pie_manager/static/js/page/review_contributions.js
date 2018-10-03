@@ -1,5 +1,5 @@
 $(function () {
-   $(".approve-contribution").on('click', function () {
+   $(document).on('click', ".approve-contribution", function () {
        var $row = $(this).parents("tr");
        var contribution_id = $row.children(".contribution_id").text();
        var url = "/contributions/review/approve/" + contribution_id;
@@ -14,7 +14,7 @@ $(function () {
            }
        })
    });
-   $(".deny-contribution").on('click', function () {
+   $(document).on('click', ".deny-contribution", function () {
        var $row = $(this).parents("tr");
        var contribution_id = $row.children(".contribution_id").text();
        var url = "/contributions/review/deny/" + contribution_id;

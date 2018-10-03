@@ -1,6 +1,7 @@
 $(function () {
-   $(".edit-contribution").on('click', function () {
+   $(document).on('click', ".edit-contribution", function () {
        var $row = $(this).parents("tr");
+       console.log("pri")
        var contribution_id = $row.children(".contribution_id").text();
        var task = $row.children(".task").text();
        var work_rate_id = $row.children(".work_rate").data("value");
@@ -18,7 +19,7 @@ $(function () {
        $editForm.find("#edit_contribution_date").val(contribution_date);
    });
 
-   $(".delete-contribution").on('click', function () {
+   $(document).on('click', ".delete-contribution", function () {
        var $row = $(this).parents("tr");
        var contribution_id = $row.children(".contribution_id").text();
        var url = "/contributions/delete/" + contribution_id;
