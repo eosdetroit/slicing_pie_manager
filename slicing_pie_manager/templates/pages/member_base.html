@@ -5,6 +5,9 @@
 <div id="welcome">
   <h2>Welcome to the Slicing Pie Manager. To report your own contributions, navigate to the <a href="{{ url_for('main.manage_contribution_page') }}">Manage Contributions</a> page. Need to add someone else? <a href="{{ url_for('main.user_admin_page') }}">Ask a chair</a> to invite them.</h2>
 </div>
+<div id="stats">
+  Total Slices Allocated: {{ total_slices }}
+</div>
 <div id="pie-chart"></div>
 <h2>Work Rates</h2>
 <div class="table-responsive">

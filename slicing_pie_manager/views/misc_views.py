@@ -36,7 +36,7 @@ def member_page():
             'y': (slices / total_slices) * 100
         })
     return render_template('pages/member_base.html', work_rates=work_rates,
-                           slice_percentages=slice_percentages)
+                           slice_percentages=slice_percentages, total_slices=total_slices)
 
 
 @main_blueprint.route('/view_contributions', methods=['GET'])
