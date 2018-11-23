@@ -67,18 +67,20 @@ def member_page():
     filtered_slice_percentages = []
     for full_name, slices in aggregate_slices_per_user.items():
         percentage = (slices / total_slices) * 100
+        grant = (slices / total_slices) * TLOS_TFRP_TOTAL_AMOUNT
         slice_percentages.append({
             'name': full_name,
             'y': percentage,
-            'grant': percentage * TLOS_TFRP_TOTAL_AMOUNT
+            'grant': grant
         })
 
     for full_name, slices in filtered_agg_slices_per_user.items():
         percentage = (slices / filtered_total_slices) * 100
+        grant = (slices / total_slices) * TLOS_TFRP_FILTERED_AMOUNT
         filtered_slice_percentages.append({
             'name': full_name,
             'y': percentage,
-            'grant': percentage * TLOS_TRFP_FILTERED_AMOUNT
+            'grant': grant
         })
 
     return render_template('pages/member_base.html', work_rates=work_rates,
