@@ -76,7 +76,7 @@ def member_page():
 
     for full_name, slices in filtered_agg_slices_per_user.items():
         percentage = (slices / filtered_total_slices) * 100
-        grant = (slices / total_slices) * TLOS_TFRP_FILTERED_AMOUNT
+        grant = (slices / filtered_total_slices) * TLOS_TFRP_FILTERED_AMOUNT
         filtered_slice_percentages.append({
             'name': full_name,
             'y': percentage,
