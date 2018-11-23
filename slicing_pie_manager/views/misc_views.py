@@ -34,7 +34,7 @@ ACCOUNTS_FILTERED_OUT = [
     'saumsmm@gmail.com',
 ]
 TLOS_TFRP_TOTAL_AMOUNT = 18000000
-TLOS_TRFP_FILTERED_AMOUNT = 5040000
+TLOS_TFRP_FILTERED_AMOUNT = 5040000
 
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/')
