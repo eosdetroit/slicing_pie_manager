@@ -12,6 +12,29 @@ import datetime
 # When using a Flask app factory we must use a blueprint to avoid needing 'app' for '@app.route'
 main_blueprint = Blueprint('main', __name__, template_folder='templates')
 
+
+ACCOUNTS_FILTERED_OUT = [
+    'asanthiel@gmail.com',
+    'covrig.c.catalin@gmail.com',
+    'sebastian.tucaliuc@gmail.com',
+    'gusa.andrei@gmail.com',
+    'cotovanuandrei@gmail.com',
+    'raluca.mehedincu@gmail.com',
+    'ianpanchevre@gmail.com',
+    'stephanie@hornofthemoon.com',
+    'Peter@hornofthemoon.com',
+    'josh@hornofthemoon.com',
+    'james@hornofthemoon.com',
+    'ed@hornofthemoon.com',
+    'douglas@hornofthemoon.com',
+    'craig@hornofthemoon.com',
+    'beth@hornofthemoon.com',
+    'amasucci13@gmail.com',
+    'Ava@telosfoundation.io',
+    'saumsmm@gmail.com',
+]
+
+
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/')
 def member_page():
@@ -20,23 +43,42 @@ def member_page():
     work_rates = WorkRate.query.all()
     contributions = Contribution.query.order_by(Contribution.contribution_date.desc()).all()
     aggregate_slices_per_user = {}
+    filtered_agg_slices_per_user = {}
     total_slices = 0
+    filtered_total_slices = 0
     for contribution in contributions:
         if contribution.status == ContributionStatus.APPROVED.value:
             total_slices = total_slices + contribution.total_slices()
+            if contribution.user.email not in ACCOUNTS_FILTERED_OUT:
+                filtered_total_slices = filtered_total_slices + contribution.total_slices() 
             if contribution.user.name() in aggregate_slices_per_user:
                 aggregate_slices_per_user[contribution.user.name()] = (aggregate_slices_per_user[contribution.user.name()] 
                     + contribution.total_slices())
             else:
                 aggregate_slices_per_user[contribution.user.name()] = contribution.total_slices()
+            if contribution.user.email not in ACCOUNTS_FILTERED_OUT:
+                if contribution.user.name() in filtered_agg_slices_per_user:
+                    filtered_agg_slices_per_user[contribution.user.name()] = (filtered_agg_slices_per_user[contribution.user.name()] 
+                        + contribution.total_slices())
+                else:
+                    filtered_agg_slices_per_user[contribution.user.name()] = contribution.total_slices()
     slice_percentages = []
+    filtered_slice_percentages = []
     for full_name, slices in aggregate_slices_per_user.items():
         slice_percentages.append({
             'name': full_name,
             'y': (slices / total_slices) * 100
         })
+    for full_name, slices in filtered_agg_slices_per_user.items():
+        filtered_slice_percentages.append({
+            'name': full_name,
+            'y': (slices / filtered_total_slices) * 100
+        })
+
     return render_template('pages/member_base.html', work_rates=work_rates,
-                           slice_percentages=slice_percentages, total_slices=total_slices)
+                           slice_percentages=slice_percentages, 
+                           filtered_slice_percentages=filtered_slice_percentages,
+                           total_slices=total_slices)
 
 
 @main_blueprint.route('/view_contributions', methods=['GET'])
