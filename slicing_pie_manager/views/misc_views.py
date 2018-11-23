@@ -33,7 +33,8 @@ ACCOUNTS_FILTERED_OUT = [
     'Ava@telosfoundation.io',
     'saumsmm@gmail.com',
 ]
-
+TLOS_TFRP_TOTAL_AMOUNT = 18000000
+TLOS_TRFP_FILTERED_AMOUNT = 5040000
 
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/')
@@ -65,14 +66,19 @@ def member_page():
     slice_percentages = []
     filtered_slice_percentages = []
     for full_name, slices in aggregate_slices_per_user.items():
+        percentage = (slices / total_slices) * 100
         slice_percentages.append({
             'name': full_name,
-            'y': (slices / total_slices) * 100
+            'y': percentage,
+            'grant': percentage * TLOS_TFRP_TOTAL_AMOUNT
         })
+
     for full_name, slices in filtered_agg_slices_per_user.items():
+        percentage = (slices / filtered_total_slices) * 100
         filtered_slice_percentages.append({
             'name': full_name,
-            'y': (slices / filtered_total_slices) * 100
+            'y': percentage,
+            'grant': percentage * TLOS_TRFP_FILTERED_AMOUNT
         })
 
     return render_template('pages/member_base.html', work_rates=work_rates,
