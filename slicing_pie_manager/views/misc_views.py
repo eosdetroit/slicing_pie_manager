@@ -13,32 +13,13 @@ import datetime
 main_blueprint = Blueprint('main', __name__, template_folder='templates')
 
 
-ACCOUNTS_FILTERED_OUT = [
-    'asanthiel@gmail.com',
-    'covrig.c.catalin@gmail.com',
-    'sebastian.tucaliuc@gmail.com',
-    'gusa.andrei@gmail.com',
-    'cotovanuandrei@gmail.com',
-    'raluca.mehedincu@gmail.com',
-    'ianpanchevre@gmail.com',
-    'stephanie@hornofthemoon.com',
-    'Peter@hornofthemoon.com',
-    'josh@hornofthemoon.com',
-    'james@hornofthemoon.com',
-    'ed@hornofthemoon.com',
-    'douglas@hornofthemoon.com',
-    'craig@hornofthemoon.com',
-    'beth@hornofthemoon.com',
-    'amasucci13@gmail.com',
-    'Ava@telosfoundation.io',
-    'saumsmm@gmail.com',
-]
 TLOS_TFRP_TOTAL_AMOUNT = 18000000
 TLOS_TFRP_FILTERED_AMOUNT = 5040000
 
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/')
 def member_page():
+    ACCOUNTS_FILTERED_OUT = current_app.config["ACCOUNTS_FILTERED_OUT"]
     if not current_user.is_authenticated:
         return redirect(url_for('user.login'))
     work_rates = WorkRate.query.all()
