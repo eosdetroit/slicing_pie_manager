@@ -86,7 +86,7 @@ def member_page():
     return render_template('pages/member_base.html', work_rates=work_rates,
                            slice_percentages=slice_percentages, 
                            filtered_slice_percentages=filtered_slice_percentages,
-                           total_slices=total_slices)
+                           total_slices=total_slices, filtered_total_slices=filtered_total_slices)
 
 
 @main_blueprint.route('/view_contributions', methods=['GET'])
