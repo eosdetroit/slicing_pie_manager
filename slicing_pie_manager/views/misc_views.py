@@ -89,7 +89,7 @@ def member_page():
         percentage = (slices / filtered_total_slices) * 100
         grant = (slices / filtered_total_slices) * TLOS_TFRP_FILTERED_AMOUNT
         filtered_wg_slice_percentages.append({
-            'workgroup': workgroup,
+            'name': workgroup,
             'y': percentage,
             'grant': grant
         })
@@ -98,7 +98,7 @@ def member_page():
         percentage = (slices / filtered_total_slices) * 100
         grant = (slices / filtered_total_slices) * TLOS_TFRP_FILTERED_AMOUNT
         filtered_type_slice_percentages.append({
-            'type': contribution_type,
+            'name': contribution_type,
             'y': percentage,
             'grant': grant
         })
