@@ -13,6 +13,9 @@
   Filtered Total Slices Allocated: {{ filtered_total_slices }}
 </div>
 <div id="filtered-pie-chart"></div>
+<div id="filtered-wg-pie-chart"></div>
+<div id="filtered-type-pie-chart"></div>
+
 <h2>Work Rates</h2>
 <div class="table-responsive">
   <table class="table datatable">
@@ -41,6 +44,8 @@
   var csrf_token = "{{ csrf_token() }}";
   var slice_percentages = {{ slice_percentages|tojson|safe }};
   var filtered_slice_percentages = {{ filtered_slice_percentages|tojson|safe }};
+  var filtered_wg_slice_percentages = {{ filtered_wg_slice_percentages|tojson|safe }};
+  var filtered_type_slice_percentages = {{ filtered_type_slice_percentages|tojson|safe }};
 </script>
 <script src="{{ url_for('static', filename='js/page/dashboard.js') }}"></script>
 {% endblock %}

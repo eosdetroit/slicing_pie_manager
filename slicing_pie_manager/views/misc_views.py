@@ -25,7 +25,14 @@ def member_page():
     work_rates = WorkRate.query.all()
     contributions = Contribution.query.order_by(Contribution.contribution_date.desc()).all()
     aggregate_slices_per_user = {}
+    #aggregate_slices_per_user = Contribution.query.join(Role, Contribution.role_id == Role.id).add_columns(Role.name).filter(Contribution.status == 'Approved');
     filtered_agg_slices_per_user = {}
+    filtered_agg_slices_per_work_group = {}
+    filtered_agg_slices_per_type = {
+        'commissions': 0,
+        'time_cash': 0
+    }
+
     total_slices = 0
     filtered_total_slices = 0
     for contribution in contributions:
@@ -44,8 +51,22 @@ def member_page():
                         + contribution.total_slices())
                 else:
                     filtered_agg_slices_per_user[contribution.user.name()] = contribution.total_slices()
+                if contribution.role.name in filtered_agg_slices_per_work_group:
+                    filtered_agg_slices_per_work_group[contribution.role.name] = (filtered_agg_slices_per_work_group[contribution.role.name] 
+                        + contribution.total_slices())
+                else:
+                    filtered_agg_slices_per_work_group[contribution.role.name] = contribution.total_slices()
+                if contribution.work_rate.category.startswith("[Commission]"):
+                    filtered_agg_slices_per_type['commissions'] = (filtered_agg_slices_per_type['commissions'] 
+                        + contribution.total_slices())
+                else:
+                    filtered_agg_slices_per_type['time_cash'] = (filtered_agg_slices_per_type['time_cash'] 
+                        + contribution.total_slices())
+
     slice_percentages = []
     filtered_slice_percentages = []
+    filtered_wg_slice_percentages = []
+    filtered_type_slice_percentages = []
     for full_name, slices in aggregate_slices_per_user.items():
         percentage = (slices / total_slices) * 100
         grant = (slices / total_slices) * TLOS_TFRP_TOTAL_AMOUNT
@@ -64,10 +85,30 @@ def member_page():
             'grant': grant
         })
 
+    for workgroup, slices in filtered_agg_slices_per_work_group.items():
+        percentage = (slices / filtered_total_slices) * 100
+        grant = (slices / filtered_total_slices) * TLOS_TFRP_FILTERED_AMOUNT
+        filtered_wg_slice_percentages.append({
+            'workgroup': workgroup,
+            'y': percentage,
+            'grant': grant
+        })
+
+    for contribution_type, slices in filtered_agg_slices_per_type.items():
+        percentage = (slices / filtered_total_slices) * 100
+        grant = (slices / filtered_total_slices) * TLOS_TFRP_FILTERED_AMOUNT
+        filtered_type_slice_percentages.append({
+            'type': contribution_type,
+            'y': percentage,
+            'grant': grant
+        })
+
     return render_template('pages/member_base.html', work_rates=work_rates,
                            slice_percentages=slice_percentages, 
                            filtered_slice_percentages=filtered_slice_percentages,
-                           total_slices=total_slices, filtered_total_slices=filtered_total_slices)
+                           total_slices=total_slices, filtered_total_slices=filtered_total_slices,
+                           filtered_wg_slice_percentages=filtered_wg_slice_percentages, 
+                           filtered_type_slice_percentages=filtered_type_slice_percentages)
 
 
 @main_blueprint.route('/view_contributions', methods=['GET'])
