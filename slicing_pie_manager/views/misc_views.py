@@ -128,6 +128,7 @@ def manage_contribution_page():
     contributions = (Contribution.query.filter(Contribution.user_id == current_user.id)
                                       .order_by(Contribution.contribution_date.desc()).all())
 
+    """
     if request.method == 'POST' and form.validate():
         contribution = Contribution(
             user_id=current_user.id, 
@@ -140,8 +141,11 @@ def manage_contribution_page():
         db.session.add(contribution)
         db.session.commit()
         return redirect(url_for('main.manage_contribution_page'))
+    """
     return render_template('pages/manage_contributions.html', form=form, contributions=contributions)
 
+
+""" Disabling edit and review functionality in the pie
 
 @main_blueprint.route('/contributions/<contribution_id>', methods=['POST'])
 @login_required
@@ -177,6 +181,7 @@ def delete_contribution(contribution_id):
     db.session.commit()
     return  redirect(url_for('main.manage_contribution_page'))
 
+"""
 
 @main_blueprint.route('/contributions/review', methods=['GET', 'POST'])
 @roles_accepted('chair')
@@ -236,6 +241,7 @@ def user_admin_page():
     return render_template('pages/admin/users.html',
         users=users)
 
+"""
 @main_blueprint.route('/create_user', methods=['GET', 'POST'])
 @roles_accepted('admin')
 def create_user_page():
@@ -256,6 +262,7 @@ def create_user_page():
     return render_template('pages/admin/create_user.html',
                            form=form)
 
+ 
 @main_blueprint.route('/delete_user', methods=['GET'])
 @roles_accepted('admin')
 def delete_user_page():
@@ -271,6 +278,7 @@ def delete_user_page():
     except Exception as e:
         flash('Opps!  Something unexpected happened.  On the brightside, we logged the error and will absolutely look at it and work to correct it, ASAP.', 'error')
         return redirect(request.referrer)
+"""
 
 
 @main_blueprint.route('/create_work_rate', methods=['GET', 'POST'])

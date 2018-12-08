@@ -46,6 +46,7 @@
                 <td class="status" scope="row">{{ contribution.status }}</td>
                 <td class="contribution_date" scope="row">{{ contribution.contribution_date }}</td>
                 <td scope="row">
+                  <!--
                   {% if contribution.status == "Reported" %}
                   <button type="button" class="btn btn-default edit-contribution" data-toggle="modal" data-target="#edit-modal" aria-label="Edit Contribution">
                     <i class="far fa-edit"></i>
@@ -54,6 +55,7 @@
                     <i class="far fa-times-circle"></i>
                   </button>
                   {% endif %}
+                -->
                 </td>
               </tr>
               {% endfor %}
@@ -61,6 +63,7 @@
           </table>
         </div>
       </div>
+      <!--
       <div class="card ">
         <form action="" method="POST" class="form" role="form">
           <div class="card-header">
@@ -116,7 +119,8 @@
           </div>
         </form>
       </div>
-      <!-- Modal -->
+    -->
+      <!-- Modal 
       <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -180,6 +184,7 @@
           </div>
         </div>
       </div>
+    -->
 </div>
 {% endblock %}
 

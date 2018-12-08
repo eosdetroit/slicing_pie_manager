@@ -73,11 +73,13 @@
                   {% if current_user.has_role('admin') or current_user.has_role('chair') %}
                   <li class="nav-title">Administration</li>
                   {% endif %}
+                  <!--
                   {% if current_user.has_role('chair') %}
                   <li class="nav-item">
                      <a class="nav-link" href="{{ url_for('user.invite') }}">
                       <i class="nav-icon icon-drop"></i> Invite Users</a>
                   </li>
+
                   {% endif %}
                   {% if current_user.has_role('chair') %}
                   <li class="nav-item">
@@ -85,6 +87,7 @@
                       <i class="nav-icon icon-drop"></i> Manage Work Rates</a>
                   </li>
                   {% endif %}
+                  -->
                   {% if current_user.has_role('chair') %}
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.review_contributions_page') }}">
