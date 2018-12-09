@@ -181,7 +181,6 @@ def delete_contribution(contribution_id):
     db.session.commit()
     return  redirect(url_for('main.manage_contribution_page'))
 
-"""
 
 @main_blueprint.route('/contributions/review', methods=['GET', 'POST'])
 @roles_accepted('chair')
@@ -227,7 +226,7 @@ def deny_contribution(contribution_id):
     )
     db.session.commit()
     return redirect(url_for('main.review_contributions_page'))
-
+"""
 
 # The Admin page is accessible to users with the 'admin' role
 @main_blueprint.route('/admin')
