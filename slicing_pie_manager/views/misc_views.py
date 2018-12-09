@@ -8,6 +8,7 @@ from slicing_pie_manager import db
 from slicing_pie_manager.models.user_models import UserProfileForm, User, Role, UsersRoles, Contribution, ContributionStatus, ContributionForm, WorkRate, WorkRateForm
 import uuid, json, os
 import datetime
+import csv
 
 # When using a Flask app factory we must use a blueprint to avoid needing 'app' for '@app.route'
 main_blueprint = Blueprint('main', __name__, template_folder='templates')
@@ -76,14 +77,18 @@ def member_page():
             'grant': grant
         })
 
-    for full_name, slices in filtered_agg_slices_per_user.items():
-        percentage = (slices / filtered_total_slices) * 100
-        grant = (slices / filtered_total_slices) * TLOS_TFRP_FILTERED_AMOUNT
-        filtered_slice_percentages.append({
-            'name': full_name,
-            'y': percentage,
-            'grant': grant
-        })
+    with open('/tmp/tfrp_grants.csv', mode='w') as tfrp_file:
+        tfrp_writer = csv.writer(tfrp_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        tfrp_writer.writerow(['Full Name', 'Telos Founders Grant'])
+        for full_name, slices in filtered_agg_slices_per_user.items():
+            percentage = (slices / filtered_total_slices) * 100
+            grant = (slices / filtered_total_slices) * TLOS_TFRP_FILTERED_AMOUNT
+            filtered_slice_percentages.append({
+                'name': full_name,
+                'y': percentage,
+                'grant': grant
+            })
+            tfrp_writer.writerow([full_name, grant])
 
     for workgroup, slices in filtered_agg_slices_per_work_group.items():
         percentage = (slices / filtered_total_slices) * 100
