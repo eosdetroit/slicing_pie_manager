@@ -68,14 +68,18 @@ def member_page():
     filtered_slice_percentages = []
     filtered_wg_slice_percentages = []
     filtered_type_slice_percentages = []
-    for full_name, slices in aggregate_slices_per_user.items():
-        percentage = (slices / total_slices) * 100
-        grant = (slices / total_slices) * TLOS_TFRP_TOTAL_AMOUNT
-        slice_percentages.append({
-            'name': full_name,
-            'y': percentage,
-            'grant': grant
-        })
+    with open('/tmp/tfvt_grants.csv', mode='w') as tfrp_file:
+        tfvt_writer = csv.writer(tfrp_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        tfvt_writer.writerow(['Full Name', 'Percentage', 'TFVT Weight'])
+        for full_name, slices in aggregate_slices_per_user.items():
+            percentage = (slices / total_slices) * 100
+            grant = (slices / total_slices) * TLOS_TFRP_TOTAL_AMOUNT
+            slice_percentages.append({
+                'name': full_name,
+                'y': percentage,
+                'grant': grant
+            })
+            tfvt_writer.writerow([full_name, percentage, grant])
 
     with open('/tmp/tfrp_grants.csv', mode='w') as tfrp_file:
         tfrp_writer = csv.writer(tfrp_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
